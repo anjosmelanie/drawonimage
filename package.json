@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "typescript": "^5.3.3"
+  }
+}
