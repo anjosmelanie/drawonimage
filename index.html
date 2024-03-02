@@ -2,12 +2,13 @@
 <html>
     <head>
         <title>Draw on Image Analysis v0</title>
-        <script type="text/javascript" src="ts-built/script.js"></script> <!-- The script must be AFTER the canvas has loaded or it wont work TODO: Make this in js file? -->
+        <script type="text/javascript" src="ts-built/script.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
         <h1>Draw on Image Analysis</h1>
-        <!--<canvas id="canvas1"></canvas>-->
-
-       
+        <button id='draw-rectangle' value="Draw Rectangle" onclick="drawRectangle()"><i class="fa fa-square-o"></i></button>
+        <button id='draw-circle' value="Draw Circle"><i class="fa fa-circle-o"></i></button>
     </body>
 </html>
+
