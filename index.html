@@ -10,19 +10,27 @@
 
         <!-- Canvas Buttons -->
         <button id='draw-rectangle' value="Draw Rectangle" onclick="drawRectangle()"><i class="fa fa-square-o"></i></button>
-        <button id='draw-circle' value="Draw Circle" onclick="drawMyPath()"><i class="fa fa-circle-o"></i></button>
-        <button id='draw-path' value="Draw Path" onclick="drawPath()"><i class="fa fa-cut"></i></button>
+        <button id='draw-circle' value="Draw Circle" onclick="drawCircle()"><i class="fa fa-circle-o"></i></button>
+        <button id='draw-path' value="Draw Path" onclick="drawMyPath()">Polygon</i></button>
+
+        <button id='hot1' value="Hotspot 1" onclick="drawOneHotspot(0)">1</button>
+        <button id='hot2' value="Hotspot 2" onclick="drawOneHotspot(1)">2</button>
+        <button id='hot3' value="Hotspot 3" onclick="drawOneHotspot(2)">3</button>
 
     </body>
 </html>
 
-<!-- TO DO List: 
-1. Add buttons: rectangle, circle
-2. Draw rectangle
-3. Draw circle
-4. Save areas (rectangles and circles) 
-5. Show all / hide all
-6. Zoom
-7. Polygons-->
+<!-- TO DO List:
+    0. Reset coordinates and remove unnecessary arrays 
+    1. Offset (keep coordinates inside the canvas)
+    2. Draw Rectangles
+    3. Draw Circles
+    4. Hide hotspots
+    5. Show one hotspot
+    6. Show all hotspots
+    7. ZOOM!
+    8. Mark corners
+    9. Remove one corner
+-->
 
 <!--Unlike SVG, <canvas> only supports two primitive shapes: rectangles and paths (lists of points connected by lines).-->
