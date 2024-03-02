@@ -7,8 +7,22 @@
     </head>
     <body>
         <h1>Draw on Image Analysis</h1>
+
+        <!-- Canvas Buttons -->
         <button id='draw-rectangle' value="Draw Rectangle" onclick="drawRectangle()"><i class="fa fa-square-o"></i></button>
-        <button id='draw-circle' value="Draw Circle"><i class="fa fa-circle-o"></i></button>
+        <button id='draw-circle' value="Draw Circle" onclick="drawMyPath()"><i class="fa fa-circle-o"></i></button>
+        <button id='draw-path' value="Draw Path" onclick="drawPath()"><i class="fa fa-cut"></i></button>
+
     </body>
 </html>
 
+<!-- TO DO List: 
+1. Add buttons: rectangle, circle
+2. Draw rectangle
+3. Draw circle
+4. Save areas (rectangles and circles) 
+5. Show all / hide all
+6. Zoom
+7. Polygons-->
+
+<!--Unlike SVG, <canvas> only supports two primitive shapes: rectangles and paths (lists of points connected by lines).-->
