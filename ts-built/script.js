@@ -28,7 +28,7 @@ function drawPath() {
     var canvas = document.getElementById("canvas-1");
     if (canvas.getContext) {
         var ctx_2 = canvas.getContext("2d");
-        ctx_2.fillStyle = "rgb(255 165 0 / 10%)";
+        ctx_2.fillStyle = "rgb(255 165 0 / 25%)";
         ctx_2.beginPath();
         ctx_2.moveTo(275, 50);
         ctx_2.lineTo(300, 75);
@@ -38,21 +38,26 @@ function drawPath() {
     }
 }
 function drawMyPath() {
+    var _this = this;
     var canvas = document.getElementById("canvas-1");
     var coordinates = [];
     document.addEventListener("click", getCoordinatesOnClick.bind(coordinates));
-    console.log(coordinates); //TODO: Remove
-    if (canvas.getContext) {
-        var init = false;
-        var ctx_3 = canvas.getContext("2d");
-        this.ctx.beginPath();
-        ctx_3.moveTo(coordinates[1].x, coordinates[1].y);
-        ctx_3.lineTo(coordinates[2].x, coordinates[2].y);
-        ctx_3.lineTo(coordinates[3].x, coordinates[3].y);
-        ctx_3.lineTo(coordinates[4].x, coordinates[4].y);
-        ctx_3.lineTo(coordinates[1].x, coordinates[1].y);
-        ctx_3.stroke(); //fill: filled, stroke: only outline
-    }
+    document.addEventListener("dblclick", function (e) {
+        console.log(coordinates); //TODO: Remove
+        if (canvas.getContext) {
+            var init = false;
+            var ctx_3 = canvas.getContext("2d");
+            ctx_3.fillStyle = "rgb(255 165 0 / 35%)";
+            _this.ctx.beginPath();
+            ctx_3.moveTo(coordinates[1].x, coordinates[1].y);
+            ctx_3.lineTo(coordinates[2].x, coordinates[2].y);
+            ctx_3.lineTo(coordinates[3].x, coordinates[3].y);
+            ctx_3.lineTo(coordinates[4].x, coordinates[4].y);
+            ctx_3.lineTo(coordinates[1].x, coordinates[1].y);
+            ctx_3.fill(); //fill: filled, stroke: only outline
+            ctx_3.stroke();
+        }
+    });
 }
 //var coords = [];
 /*

@@ -33,7 +33,7 @@ function drawPath(){
     const canvas = <HTMLCanvasElement>document.getElementById("canvas-1");
     if (canvas.getContext) {
       const ctx = canvas.getContext("2d");
-      ctx.fillStyle = "rgb(255 165 0 / 10%)";
+      ctx.fillStyle = "rgb(255 165 0 / 25%)";
       ctx.beginPath();
       ctx.moveTo(275, 50); 
       ctx.lineTo(300, 75);
@@ -48,18 +48,22 @@ function drawMyPath(){
     const canvas = <HTMLCanvasElement>document.getElementById("canvas-1");
     var coordinates = [];
     document.addEventListener("click", getCoordinatesOnClick.bind(coordinates));
-    console.log(coordinates); //TODO: Remove
-    if (canvas.getContext) {
-        var init = false;
-        const ctx = canvas.getContext("2d");
-        this.ctx.beginPath();
-        ctx.moveTo(coordinates[1].x, coordinates[1].y);
-        ctx.lineTo(coordinates[2].x, coordinates[2].y);
-        ctx.lineTo(coordinates[3].x, coordinates[3].y);
-        ctx.lineTo(coordinates[4].x, coordinates[4].y);
-        ctx.lineTo(coordinates[1].x, coordinates[1].y);
-        ctx.stroke(); //fill: filled, stroke: only outline
-    }
+    document.addEventListener("dblclick", (e) => { //Double click to stop counting points
+        console.log(coordinates); //TODO: Remove
+        if (canvas.getContext) {
+            var init = false;
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "rgb(255 165 0 / 35%)";
+            this.ctx.beginPath();
+            ctx.moveTo(coordinates[1].x, coordinates[1].y);
+            ctx.lineTo(coordinates[2].x, coordinates[2].y);
+            ctx.lineTo(coordinates[3].x, coordinates[3].y);
+            ctx.lineTo(coordinates[4].x, coordinates[4].y);
+            ctx.lineTo(coordinates[1].x, coordinates[1].y);
+            ctx.fill(); //fill: filled, stroke: only outline
+            ctx.stroke();
+        }
+      });
 }
 
 
