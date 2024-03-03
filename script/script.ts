@@ -161,7 +161,34 @@ function createButton(hotspotId){
     element.value = hotspotId;
     element.type = "button";
     element.setAttribute('onclick', "drawOneHotspot('"+hotspotId+"')");
-    document.getElementById("hotspots-here").appendChild(element);
+    document.getElementById("buttons-here").appendChild(element);
+}
+
+function saveHotspot(hotspot){
+    var element = document.createElement("input");
+    element.value = "Show";
+    element.type = "button";
+    element.setAttribute('onclick', "drawOneHotspot('"+hotspot.id+"')");
+    document.getElementById("buttons-here").appendChild(element);
+
+    var table = document.getElementById("saved-hotspots");
+    var newRow = document.createElement("tr");
+
+    for (var i = 0; i <= 5; i++) {
+        newRow.appendChild( document.createElement('td') );
+    }
+
+    newRow.cells[0].innerHTML = hotspot.id;
+    newRow.cells[1].innerHTML = hotspot.type;
+    newRow.cells[2].innerHTML = "x:" + hotspot.coordinates.x + ", y:" + hotspot.coordinates.y;
+    newRow.cells[3].innerHTML = hotspot.color; //TODO: For fun paint this in the color
+    newRow.cells[4].innerHTML = hotspot.radius;
+    newRow.cells[5].appendChild(element);
+    //TODO: Add delete hotspot button
+
+    table.appendChild(newRow);
+
+
 }
 
 function getCoordinatesOnClick(event){
@@ -186,14 +213,17 @@ function fixCoordinatesArray(array){
 }
 
 function addSimpleHotspot(id, type, coordinates, color, radius){
+    var hotspot: Hotspot;
     if(type==CIRCLE){
-        hotspots.push(new Hotspot(id, CIRCLE, coordinates, color, radius));
+        hotspot = new Hotspot(id, CIRCLE, coordinates, color, radius);
     } else if (type==RECTANGLE){
         //TO DO: rectangle
     } else if (type=POLYGON){
-        hotspots.push(new Hotspot(id, POLYGON, coordinates, random_rgb(), undefined));
+        hotspot = new Hotspot(id, POLYGON, coordinates, random_rgb(), undefined);
     }
-    createButton(id);
+    hotspots.push(hotspot);
+    saveHotspot(hotspot);
+    //createButton(id);
 }
 
 

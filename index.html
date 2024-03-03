@@ -14,23 +14,32 @@
         <button id='draw-path' value="Draw Path" onclick="drawMyPath()">Polygon</i></button>
 
         
-        <button id='reset' value="Reset canvas" onclick="resetCanvas('canvas-1')">Reset</button>
-        <!--
-        <button id='hot2' value="Hotspot 2" onclick="drawOneHotspot(1)">2</button>
-        <button id='hot3' value="Hotspot 3" onclick="drawOneHotspot(2)">3</button>
-        -->
-
-        <button id='read' value="Read Hotspots" onclick="readHotspots()">R</button>
+        <!--<button id='list' value="Hotspots List" onclick="readHotspots()">List</button> Console only-->
 
         <div id="canvas-here" style="margin-top:15px;"></div>
 
-        <div id="hotspots-here" style="margin-top:15px;"></div>
+        <div id="buttons-here" style="margin-top:15px;"></div>
+
+        <div style="margin-top:15px;">
+            <button id='reset' value="Reset canvas" onclick="resetCanvas('canvas-1')">Hide all</button>
+            <h2>Saved Hotspots</h2>
+            <!--<input type="button" value="Clear History" onclick="clearHistoryTable()"></input> Remove all hotspots--> 
+            <table style="width:100%" id="saved-hotspots">
+              <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Coordinates</th>
+                <th>Color</th>
+                <th>Radius</th>
+                <th>Actions</th>
+              </tr>
+            </table>
+          </div>  
 
     </body>
 </html>
 
 <!-- TO DO List:
-    1. Hide hotspots
     2. Show one hotspot
     3. Show all hotspots
     4. ZOOM!
@@ -43,7 +52,11 @@
 
     BUGS: 
     - double click always creates a circle
-    - when you click on circle twice you create two circles
+    - when you click on circle button twice you create two circles
 -->
 
 <!--Unlike SVG, <canvas> only supports two primitive shapes: rectangles and paths (lists of points connected by lines).-->
+
+<!-- May be useful for zoom:
+https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas
+-->
