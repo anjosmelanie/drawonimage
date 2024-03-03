@@ -1,5 +1,6 @@
 var canvas: HTMLCanvasElement;
 var ctx: CanvasRenderingContext2D | null;
+var rect: DOMRect;
 
 var background = new Image();
 background.src = "https://flying-pikachu.com/assets/img/intro/banner_flying-pikachu_en.webp";
@@ -7,6 +8,7 @@ background.src = "https://flying-pikachu.com/assets/img/intro/banner_flying-pika
 // Make sure the image is loaded first otherwise nothing will draw.
 background.onload = function(){
     createCanvas();
+    rect = canvas.getBoundingClientRect(); //To calculate offset
 }
 
 //The most important thing on this file!
@@ -15,12 +17,14 @@ var hotspots = [];
 function createCanvas(){
     this.canvas = document.createElement('canvas');
     this.ctx = canvas.getContext("2d");
-    canvas.width = 671;
-    canvas.height = 475;
+    canvas.width = background.width;
+    canvas.height = background.height;
     canvas.id = "canvas-1"
     document.getElementById("canvas-here").appendChild(canvas);
     this.ctx.drawImage(background,0,0);   
 }
+
+/* Draw Functions --------------------------------------------------------------------- */
 
 function drawRectangle(){
     const canvas = <HTMLCanvasElement>document.getElementById("canvas-1");
@@ -67,6 +71,7 @@ function drawPath(){
     }
 }
 
+//Draws correct position :)
 function drawMyPath(){
     const canvas = <HTMLCanvasElement>document.getElementById("canvas-1");
     var coordinates = [];
@@ -92,33 +97,26 @@ function drawMyPath(){
       });
 }
 
-
-//var coords = [];
-
-/* 
-moveTo(x, y)
-Moves the pen to the coordinates specified by x and y.
-
-lineTo(x, y)
-Draws a line from the current drawing position to the position specified by x and y.
-
-arc(x, y, radius, startAngle, endAngle, counterclockwise)
-Draws an arc which is centered at (x, y) position with radius r starting at startAngle and ending at endAngle going in the given direction indicated by counterclockwise (defaulting to clockwise).
-
-arcTo(x1, y1, x2, y2, radius)
-Draws an arc with the given control points and radius, connected to the previous point by a straight line. */
+/* Helper Functions ------------------------------------------------------------------- */
 
 function storeCoordinate(xVal, yVal, array){
     array.push({"x": xVal, "y": yVal});
 }
 
 function getCoordinatesOnClick(event){
-    //console.log("Mouse: " + event.clientX, ", " + event.clientY);
-    storeCoordinate(event.clientX, event.clientY, this); //this is the bound coordinate array
+    //console.log("Mouse: " + event.clientX, ", " + event.clientY); //Original mouse position
+    var coord = offsetCoordinates(event.clientX, event.clientY);
+    //console.log("function: " + coord.xValue + ", " + coord.yValue);
+    storeCoordinate(coord.xValue, coord.yValue, this); //this is the bound coordinate array
+}
+
+function offsetCoordinates(xVal, yVal){
+    var xValue = xVal - rect.left;
+    var yValue = yVal - rect.top;
+    return{xValue, yValue};
 }
 
 /* Remove the first click (button press), the last two clicks (double click to end) and add the first coordinate to the end */
-//TODO: Offset X, Offset Y
 function fixCoordinatesArray(array){
     var newCoordinates = [];
     for(let a = 1; a<=array.length-2; a++){
@@ -164,7 +162,8 @@ function readHotspots(){
     }
 }
 
-// For fun!
+/* Fun Functions ---------------------------------------------------------------------- */
+
 function random_rgb() {
     var o = Math.round, r = Math.random, s = 255;
     return "rgb(" + o(r()*s) + " " + o(r()*s) + " " + o(r()*s) + " / 35%)";
