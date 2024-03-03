@@ -12,8 +12,6 @@
         <button id='draw-rectangle' value="Draw Rectangle" onclick="drawRectangle()"><i class="fa fa-square-o"></i></button>
         <button id='draw-circle' value="Draw Circle" onclick="createCircle()"><i class="fa fa-circle-o"></i></button>
         <button id='draw-path' value="Draw Path" onclick="drawMyPath()">Polygon</i></button>
-
-        
         <!--<button id='list' value="Hotspots List" onclick="readHotspots()">List</button> Console only-->
 
         <div id="canvas-here" style="margin-top:15px;"></div>
@@ -21,6 +19,7 @@
         <div id="buttons-here" style="margin-top:15px;"></div>
 
         <div style="margin-top:15px;">
+            <button id='show-all' value="Paint all hotspots" onclick="drawAllHotspots()">Show all</button>
             <button id='reset' value="Reset canvas" onclick="resetCanvas('canvas-1')">Hide all</button>
             <h2>Saved Hotspots</h2>
             <!--<input type="button" value="Clear History" onclick="clearHistoryTable()"></input> Remove all hotspots--> 
@@ -40,15 +39,13 @@
 </html>
 
 <!-- TO DO List:
-    2. Show one hotspot
-    3. Show all hotspots
-    4. ZOOM!
-    5. Draw as you go!
-    6. Mark corners
-    7. Remove one corner
-    8. Fix Circle
-    9. Draw Rectangles
-    10. Hotspots cant touch
+    1. ZOOM!
+    2. Draw as you go!
+    3. Mark corners
+    4. Remove one corner
+    5. Hotspots cant touch
+    6. Fix Circle
+    7. Draw Rectangles
 
     BUGS: 
     - double click always creates a circle

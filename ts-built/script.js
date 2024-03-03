@@ -15,12 +15,12 @@ function Hotspot(id, type, coordinates, color, radius) {
     this.color = color;
     this.radius = radius;
 }
+//The most important thing on this file!
 var hotspots = [];
-// END
 var CIRCLE = "circle";
 var POLYGON = "polygon";
 var RECTANGLE = "rectangle";
-var id = 0;
+var id = 0; //To track hotspots (awful but it works for now)
 function createCanvas() {
     this.canvas = document.createElement('canvas');
     this.ctx = canvas.getContext("2d");
@@ -55,7 +55,6 @@ function createCircle() {
 }
 //Draws correct position :)
 function drawMyPath() {
-    var _this = this;
     var canvas = document.getElementById("canvas-1");
     var coordinates = [];
     var color = random_rgb();
@@ -64,22 +63,27 @@ function drawMyPath() {
         var newCoordinates = fixCoordinatesArray(coordinates);
         coordinates = [];
         if (canvas.getContext) {
-            var ctx_2 = canvas.getContext("2d");
-            ctx_2.fillStyle = random_rgb();
-            _this.ctx.beginPath();
-            //console.log("Coords:" + newCoordinates[0].x + "," + newCoordinates[0].y);
-            ctx_2.moveTo(newCoordinates[0].x, newCoordinates[0].y); //First step
-            for (var a = 1; a < newCoordinates.length; a++) {
-                ctx_2.stroke();
-                //console.log("Coords:" + newCoordinates[a].x + "," + newCoordinates[a].y);
-                ctx_2.lineTo(newCoordinates[a].x, newCoordinates[a].y);
-            }
-            ctx_2.stroke();
-            ctx_2.fill();
+            drawPolygon(newCoordinates, color);
         }
-        //addPolygonHotspot(newCoordinates);
-        addSimpleHotspot(id++, POLYGON, coordinates, color, undefined);
+        addSimpleHotspot(id++, POLYGON, newCoordinates, color, undefined);
     });
+}
+function drawPolygon(coordinates, color) {
+    var canvas = document.getElementById("canvas-1");
+    if (canvas.getContext) {
+        var ctx_2 = canvas.getContext("2d");
+        ctx_2.fillStyle = color;
+        this.ctx.beginPath();
+        console.log("Coordinates: " + coordinates);
+        console.log("Coordinates[0]: " + coordinates[0]);
+        console.log("Coordinates[0].x: " + coordinates[0].x);
+        ctx_2.moveTo(coordinates[0].x, coordinates[0].y); //First step
+        for (var a = 1; a < coordinates.length; a++) {
+            ctx_2.lineTo(coordinates[a].x, coordinates[a].y);
+        }
+        ctx_2.stroke();
+        ctx_2.fill();
+    }
 }
 /* Draw Hotspots Functions ------------------------------------------------------------ */
 function readHotspots() {
@@ -87,7 +91,6 @@ function readHotspots() {
         console.log(hotspots[a]);
     }
 }
-//hotspots.push({"type": CIRCLE, "coordinates": coordinates, "color": color, "radius": option});
 function drawOneHotspot(index) {
     var spot = hotspots[index]; //Instead of this it should be lookup by id but it works for now
     if (spot.type == CIRCLE) {
@@ -97,14 +100,16 @@ function drawOneHotspot(index) {
         console.log(RECTANGLE);
     }
     else if (spot.type == POLYGON) {
-        console.log(POLYGON);
+        drawPolygon(spot.coordinates, spot.color);
     }
 }
 function drawAllHotspots() {
+    for (var a = 0; a < hotspots.length; a++) {
+        drawOneHotspot(a);
+    }
 }
 function drawCircle(coordinates, color, radius) {
     var canvas = document.getElementById("canvas-1");
-    console.log(color);
     var x = coordinates.x;
     var y = coordinates.y;
     if (canvas.getContext) {
@@ -129,6 +134,7 @@ function resetCanvas(id) {
 function storeCoordinate(xVal, yVal, array) {
     array.push({ "x": xVal, "y": yVal });
 }
+//Deprecated
 function createButton(hotspotId) {
     var element = document.createElement("input");
     element.value = hotspotId;
@@ -150,10 +156,10 @@ function saveHotspot(hotspot) {
     newRow.cells[0].innerHTML = hotspot.id;
     newRow.cells[1].innerHTML = hotspot.type;
     newRow.cells[2].innerHTML = "x:" + hotspot.coordinates.x + ", y:" + hotspot.coordinates.y;
-    newRow.cells[3].innerHTML = hotspot.color; //TODO: For fun paint this in the color
+    newRow.cells[3].innerHTML = hotspot.color; //TODO: For fun! paint this in the color
     newRow.cells[4].innerHTML = hotspot.radius;
     newRow.cells[5].appendChild(element);
-    //TODO: Add delete hotspot button
+    //TODO: Add delete-hotspot button
     table.appendChild(newRow);
 }
 function getCoordinatesOnClick(event) {
@@ -187,7 +193,6 @@ function addSimpleHotspot(id, type, coordinates, color, radius) {
     }
     hotspots.push(hotspot);
     saveHotspot(hotspot);
-    //createButton(id);
 }
 /* Fun Functions ---------------------------------------------------------------------- */
 function random_rgb() {
