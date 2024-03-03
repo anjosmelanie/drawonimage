@@ -8,8 +8,19 @@ background.onload = function () {
     createCanvas();
     rect = canvas.getBoundingClientRect(); //To calculate offset
 };
-//The most important thing on this file!
+function Hotspot(id, type, coordinates, color, radius) {
+    this.id = id;
+    this.type = type;
+    this.coordinates = coordinates;
+    this.color = color;
+    this.radius = radius;
+}
 var hotspots = [];
+// END
+var CIRCLE = "circle";
+var POLYGON = "polygon";
+var RECTANGLE = "rectangle";
+var id = 0;
 function createCanvas() {
     this.canvas = document.createElement('canvas');
     this.ctx = canvas.getContext("2d");
@@ -19,7 +30,7 @@ function createCanvas() {
     document.getElementById("canvas-here").appendChild(canvas);
     this.ctx.drawImage(background, 0, 0);
 }
-/* Draw Functions --------------------------------------------------------------------- */
+/* Create Hotspot Functions  ----------------------------------------------------------- */
 function drawRectangle() {
     var canvas = document.getElementById("canvas-1");
     if (canvas.getContext) {
@@ -31,76 +42,108 @@ function drawRectangle() {
 }
 //Works with double click
 //TODO: Find the radius with click and drag.
-function drawCircle() {
+function createCircle() {
     var canvas = document.getElementById("canvas-1");
     canvas.addEventListener("dblclick", function (e) {
-        var x = e.clientX;
-        var y = e.clientY;
         var radius = random_radius();
-        if (canvas.getContext) {
-            var ctx_2 = canvas.getContext("2d");
-            ctx_2.fillStyle = random_rgb();
-            ctx_2.beginPath();
-            ctx_2.arc(x, y, radius, 0, 2 * Math.PI);
-            ctx_2.stroke();
-            ctx_2.fill();
-        }
-        addSimpleHotspot("circle", x, y, radius);
+        var color = random_rgb();
+        var coordinates = offsetCoordinates(e.clientX, e.clientY);
+        var coords = { "x": coordinates.x, "y": coordinates.y };
+        drawCircle(coords, color, radius);
+        addSimpleHotspot(id++, CIRCLE, coords, color, radius);
     });
-}
-function drawPath() {
-    var canvas = document.getElementById("canvas-1");
-    if (canvas.getContext) {
-        var ctx_3 = canvas.getContext("2d");
-        ctx_3.fillStyle = "rgb(255 165 0 / 25%)";
-        ctx_3.beginPath();
-        ctx_3.moveTo(275, 50);
-        ctx_3.lineTo(300, 75);
-        ctx_3.lineTo(400, 25);
-        ctx_3.lineTo(275, 50);
-        ctx_3.fill(); //fill: filled, stroke: only outline
-    }
 }
 //Draws correct position :)
 function drawMyPath() {
     var _this = this;
     var canvas = document.getElementById("canvas-1");
     var coordinates = [];
+    var color = random_rgb();
     canvas.addEventListener("click", getCoordinatesOnClick.bind(coordinates));
     canvas.addEventListener("dblclick", function (e) {
         var newCoordinates = fixCoordinatesArray(coordinates);
         coordinates = [];
         if (canvas.getContext) {
-            var ctx_4 = canvas.getContext("2d");
-            ctx_4.fillStyle = random_rgb();
+            var ctx_2 = canvas.getContext("2d");
+            ctx_2.fillStyle = random_rgb();
             _this.ctx.beginPath();
             //console.log("Coords:" + newCoordinates[0].x + "," + newCoordinates[0].y);
-            ctx_4.moveTo(newCoordinates[0].x, newCoordinates[0].y); //First step
+            ctx_2.moveTo(newCoordinates[0].x, newCoordinates[0].y); //First step
             for (var a = 1; a < newCoordinates.length; a++) {
-                ctx_4.stroke();
+                ctx_2.stroke();
                 //console.log("Coords:" + newCoordinates[a].x + "," + newCoordinates[a].y);
-                ctx_4.lineTo(newCoordinates[a].x, newCoordinates[a].y);
+                ctx_2.lineTo(newCoordinates[a].x, newCoordinates[a].y);
             }
-            ctx_4.stroke();
-            ctx_4.fill();
+            ctx_2.stroke();
+            ctx_2.fill();
         }
-        addPolygonHotspot(newCoordinates);
+        //addPolygonHotspot(newCoordinates);
+        addSimpleHotspot(id++, POLYGON, coordinates, color, undefined);
     });
+}
+/* Draw Hotspots Functions ------------------------------------------------------------ */
+function readHotspots() {
+    for (var a = 0; a < hotspots.length; a++) {
+        console.log(hotspots[a]);
+    }
+}
+//hotspots.push({"type": CIRCLE, "coordinates": coordinates, "color": color, "radius": option});
+function drawOneHotspot(index) {
+    var spot = hotspots[index]; //Instead of this it should be lookup by id but it works for now
+    if (spot.type == CIRCLE) {
+        drawCircle(spot.coordinates, spot.color, spot.radius);
+    }
+    else if (spot.type == RECTANGLE) {
+        console.log(RECTANGLE);
+    }
+    else if (spot.type == POLYGON) {
+        console.log(POLYGON);
+    }
+}
+function drawAllHotspots() {
+}
+function drawCircle(coordinates, color, radius) {
+    var canvas = document.getElementById("canvas-1");
+    console.log(color);
+    var x = coordinates.x;
+    var y = coordinates.y;
+    if (canvas.getContext) {
+        var ctx_3 = canvas.getContext("2d");
+        ctx_3.fillStyle = color;
+        ctx_3.beginPath();
+        ctx_3.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx_3.stroke();
+        ctx_3.fill();
+        console.log(x, y, radius, color);
+    }
+}
+function resetCanvas(id) {
+    var canvas = document.getElementById(id);
+    if (canvas.getContext) {
+        var ctx_4 = canvas.getContext("2d");
+        ctx_4.clearRect(0, 0, canvas.width, canvas.height);
+        ctx_4.drawImage(background, 0, 0);
+    }
 }
 /* Helper Functions ------------------------------------------------------------------- */
 function storeCoordinate(xVal, yVal, array) {
     array.push({ "x": xVal, "y": yVal });
 }
+function createButton(hotspotId) {
+    var element = document.createElement("input");
+    element.value = hotspotId;
+    element.type = "button";
+    element.setAttribute('onclick', "drawOneHotspot('" + hotspotId + "')");
+    document.getElementById("hotspots-here").appendChild(element);
+}
 function getCoordinatesOnClick(event) {
-    //console.log("Mouse: " + event.clientX, ", " + event.clientY); //Original mouse position
     var coord = offsetCoordinates(event.clientX, event.clientY);
-    //console.log("function: " + coord.xValue + ", " + coord.yValue);
-    storeCoordinate(coord.xValue, coord.yValue, this); //this is the bound coordinate array
+    storeCoordinate(coord.x, coord.y, this);
 }
 function offsetCoordinates(xVal, yVal) {
-    var xValue = xVal - rect.left;
-    var yValue = yVal - rect.top;
-    return { xValue: xValue, yValue: yValue };
+    var x = xVal - rect.left;
+    var y = yVal - rect.top;
+    return { x: x, y: y };
 }
 /* Remove the first click (button press), the last two clicks (double click to end) and add the first coordinate to the end */
 function fixCoordinatesArray(array) {
@@ -111,37 +154,17 @@ function fixCoordinatesArray(array) {
     newCoordinates.push({ "x": array[1].x, "y": array[1].y }); //Back to starting point
     return newCoordinates;
 }
-//TODO: Reset canvas
-function drawOneHotspot(index) {
-    var canvas = document.getElementById("canvas-1");
-    if (canvas.getContext) {
-        var hotspot = hotspots[index].coordinates;
-        var ctx_5 = canvas.getContext("2d");
-        ctx_5.fillStyle = random_rgb();
-        this.ctx.beginPath();
-        ctx_5.moveTo(hotspot[0].x, hotspot[0].y); //First step
-        for (var a = 1; a < hotspot.length; a++) {
-            ctx_5.lineTo(hotspot[a].x, hotspot[a].y);
-        }
-        ctx_5.stroke();
-        ctx_5.fill();
+function addSimpleHotspot(id, type, coordinates, color, radius) {
+    if (type == CIRCLE) {
+        hotspots.push(new Hotspot(id, CIRCLE, coordinates, color, radius));
     }
-}
-;
-function addSimpleHotspot(type, coordX, coordY, option) {
-    var coordinates = [];
-    coordinates.push({ "x": coordX, "y": coordY });
-    if (type == "circle") {
-        hotspots.push({ "type": type, "coordinates": coordinates, "radius": option, "color": random_rgb() });
+    else if (type == RECTANGLE) {
+        //TO DO: rectangle
     }
-}
-function addPolygonHotspot(coordinates) {
-    hotspots.push({ "type": "polygon", "coordinates": coordinates, "color": random_rgb() });
-}
-function readHotspots() {
-    for (var a = 0; a < hotspots.length; a++) {
-        console.log(hotspots[a]);
+    else if (type = POLYGON) {
+        hotspots.push(new Hotspot(id, POLYGON, coordinates, random_rgb(), undefined));
     }
+    createButton(id);
 }
 /* Fun Functions ---------------------------------------------------------------------- */
 function random_rgb() {

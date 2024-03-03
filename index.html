@@ -10,11 +10,12 @@
 
         <!-- Canvas Buttons -->
         <button id='draw-rectangle' value="Draw Rectangle" onclick="drawRectangle()"><i class="fa fa-square-o"></i></button>
-        <button id='draw-circle' value="Draw Circle" onclick="drawCircle()"><i class="fa fa-circle-o"></i></button>
+        <button id='draw-circle' value="Draw Circle" onclick="createCircle()"><i class="fa fa-circle-o"></i></button>
         <button id='draw-path' value="Draw Path" onclick="drawMyPath()">Polygon</i></button>
 
+        
+        <button id='reset' value="Reset canvas" onclick="resetCanvas('canvas-1')">Reset</button>
         <!--
-        <button id='hot1' value="Hotspot 1" onclick="drawOneHotspot(0)">1</button>
         <button id='hot2' value="Hotspot 2" onclick="drawOneHotspot(1)">2</button>
         <button id='hot3' value="Hotspot 3" onclick="drawOneHotspot(2)">3</button>
         -->
@@ -22,6 +23,8 @@
         <button id='read' value="Read Hotspots" onclick="readHotspots()">R</button>
 
         <div id="canvas-here" style="margin-top:15px;"></div>
+
+        <div id="hotspots-here" style="margin-top:15px;"></div>
 
     </body>
 </html>
@@ -37,6 +40,10 @@
     8. Fix Circle
     9. Draw Rectangles
     10. Hotspots cant touch
+
+    BUGS: 
+    - double click always creates a circle
+    - when you click on circle twice you create two circles
 -->
 
 <!--Unlike SVG, <canvas> only supports two primitive shapes: rectangles and paths (lists of points connected by lines).-->
